@@ -1,76 +1,29 @@
-const bankOne = [
-    {
-      keyCode: 81,
-      keyTrigger: 'Q',
-      id: 'Heater-1',
-      url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3'
-    },
-    {
-      keyCode: 87,
-      keyTrigger: 'W',
-      id: 'Heater-2',
-      url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3'
-    },
-    {
-      keyCode: 69,
-      keyTrigger: 'E',
-      id: 'Heater-3',
-      url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3'
-    },
-    {
-      keyCode: 65,
-      keyTrigger: 'A',
-      id: 'Heater-4',
-      url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3'
-    },
-    {
-      keyCode: 83,
-      keyTrigger: 'S',
-      id: 'Clap',
-      url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3'
-    },
-    {
-      keyCode: 68,
-      keyTrigger: 'D',
-      id: 'Open-HH',
-      url: 'https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3'
-    },
-    {
-      keyCode: 90,
-      keyTrigger: 'Z',
-      id: "Kick-n'-Hat",
-      url: 'https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3'
-    },
-    {
-      keyCode: 88,
-      keyTrigger: 'X',
-      id: 'Kick',
-      url: 'https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3'
-    },
-    {
-      keyCode: 67,
-      keyTrigger: 'C',
-      id: 'Closed-HH',
-      url: 'https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3'
-    }
-  ];
-  
-  const text = document.querySelector("#text");
-  const drumpads = document.querySelector(".drumpad");
-  
-  function playAudio(key) {
-   let keyPressed = bankOne.filter((item) => item.keyTrigger == key);
-      let audio = new Audio(keyPressed[0].url);
-      audio.play();
-    text.innerHTML = `${keyPressed[0].id}`;
-    
-    }
-  
-  drumpads.addEventListener("click", (key) => {
-    playAudio(key.target.innerText);
-    }
-    );
-  
+const drumpads = document.querySelectorAll('.drum-pad')
+const display = document.querySelector("#display")
+
+const playSound = sound => {
+  sound.play()
+  let pad = sound.parentElement
+  display.innerHTML = pad.id.replace(/-/g, ' ')
+  pad.classList.add("active")
+  setTimeout(() => {
+    pad.classList.remove("active")
+  }, 200)
+}
+
+drumpads.forEach(pad => {
+  pad.addEventListener('click', (e) => {
+    let sound = pad.children[0]
+    playSound(sound)
+  })
+})
+document.onkeydown = (e) => {
+  let pressedKey = String.fromCharCode(e.keyCode).toUpperCase()
+  let sound = document.querySelector(`#${pressedKey}`)
+  if (sound) {
+    playSound(sound)
+  }
+}
   
   
   
